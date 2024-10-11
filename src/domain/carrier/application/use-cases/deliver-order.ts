@@ -8,11 +8,11 @@ interface DeliverOrderUseCaseRequest {
 }
 
 export class DeliverOrderUseCase {
-  constructor(private ordersRepository: OrdersRepository) {}
+  constructor(private ordersRepository: OrdersRepository) { }
 
   async execute({
     courierId,
     recipientId,
     orderId,
-  }: DeliverOrderUseCaseRequest) {}
+  }: DeliverOrderUseCaseRequest) { }
 }
