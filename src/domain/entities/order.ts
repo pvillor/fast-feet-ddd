@@ -1,7 +1,7 @@
 import { OrderStatus, Status } from "./value-objects/order-status"
-import { Entity } from "../../core/entities/entity"
-import { UniqueEntityId } from "../../core/entities/unique-entity-id"
-import { Optional } from "../../core/types/optional"
+import { Entity } from "@/core/entities/entity"
+import { UniqueEntityId } from "@/core/entities/unique-entity-id"
+import { Optional } from "@/core/types/optional"
 
 interface OrderProps {
   ordererId: UniqueEntityId
@@ -14,6 +14,34 @@ interface OrderProps {
 }
 
 export class Order extends Entity<OrderProps> {
+
+  get ordererId() {
+    return this.props.ordererId
+  }
+
+  get courierId() {
+    return this.props.courierId
+  }
+
+  get status() {
+    return this.props.status.value
+  }
+
+  get orderedAt() {
+    return this.props.orderedAt
+  }
+
+  get dispatchedAt() {
+    return this.props.dispatchedAt
+  }
+
+  get retrievedAt() {
+    return this.props.retrievedAt
+  }
+
+  get deliveredAt() {
+    return this.props.deliveredAt
+  }
 
   static create(props: Optional<OrderProps, 'status' | 'orderedAt'>, id?: UniqueEntityId) {
     const order = new Order({
