@@ -1,5 +1,5 @@
-import { UniqueEntityId } from "@/core/entities/unique-entity-id"
-import { OrdersRepository } from "../repositories/order-repository"
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { OrdersRepository } from '../repositories/order-repository'
 
 interface DeliverOrderUseCaseRequest {
   courierId: UniqueEntityId
@@ -8,11 +8,11 @@ interface DeliverOrderUseCaseRequest {
 }
 
 export class DeliverOrderUseCase {
-  constructor(
-    private ordersRepository: OrdersRepository
-  ) { }
+  constructor(private ordersRepository: OrdersRepository) {}
 
-  async execute({ courierId, recipientId, orderId }: DeliverOrderUseCaseRequest) {
-
-  }
+  async execute({
+    courierId,
+    recipientId,
+    orderId,
+  }: DeliverOrderUseCaseRequest) {}
 }

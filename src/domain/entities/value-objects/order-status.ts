@@ -4,7 +4,7 @@ export enum Status {
   Pending = 'pending',
   Collected = 'collected',
   Delivered = 'delivered',
-  Canceled = 'canceled'
+  Canceled = 'canceled',
 }
 
 export class OrderStatus {

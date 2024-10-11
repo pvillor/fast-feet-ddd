@@ -1,5 +1,5 @@
-import { Entity } from "@/core/entities/entity"
-import { UniqueEntityId } from "@/core/entities/unique-entity-id"
+import { Entity } from '@/core/entities/entity'
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 interface RecipientProps {
   name: string
@@ -15,13 +15,13 @@ export class Recipient extends Entity<RecipientProps> {
     return this.props.address
   }
 
-  static create(
-    props: RecipientProps,
-    id?: UniqueEntityId
-  ) {
-    const recipient = new Recipient({
-      ...props
-    }, id)
+  static create(props: RecipientProps, id?: UniqueEntityId) {
+    const recipient = new Recipient(
+      {
+        ...props,
+      },
+      id,
+    )
 
     return recipient
   }
