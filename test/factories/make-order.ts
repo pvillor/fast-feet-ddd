@@ -5,7 +5,7 @@ export function makeOrder(override: Partial<OrderProps>, id?: UniqueEntityId) {
   const order = Order.create(
     {
       courierId: new UniqueEntityId(),
-      ordererId: new UniqueEntityId(),
+      recipientId: new UniqueEntityId(),
       ...override,
     },
     id,

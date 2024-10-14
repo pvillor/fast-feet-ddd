@@ -4,18 +4,18 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
 export interface OrderProps {
-  ordererId: UniqueEntityId
+  recipientId: UniqueEntityId
   courierId: UniqueEntityId
   status: OrderStatus
   orderedAt: Date
-  dispatchedAt?: Date
-  retrievedAt?: Date
-  deliveredAt?: Date
+  dispatchedAt?: Date | null
+  retrievedAt?: Date | null
+  deliveredAt?: Date | null
 }
 
 export class Order extends Entity<OrderProps> {
-  get ordererId() {
-    return this.props.ordererId
+  get recipientId() {
+    return this.props.recipientId
   }
 
   get courierId() {
@@ -23,7 +23,7 @@ export class Order extends Entity<OrderProps> {
   }
 
   get status() {
-    return this.props.status.value
+    return this.props.status
   }
 
   get orderedAt() {

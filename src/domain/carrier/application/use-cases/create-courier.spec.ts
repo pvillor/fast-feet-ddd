@@ -13,10 +13,17 @@ describe('Create Courier', () => {
   it('should be able to create a courier', async () => {
     const { courier } = await sut.execute({
       name: 'John Doe',
-      cpf: '000000000000',
+      cpf: '00000000000',
     })
 
     expect(courier.id).toBeTruthy()
     expect(inMemoryCouriersRepository.items[0].id).toEqual(courier.id)
+
+    expect(() =>
+      sut.execute({
+        name: 'John Doe',
+        cpf: '1234',
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })

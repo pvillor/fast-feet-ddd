@@ -14,6 +14,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return order
   }
 
+  async save(order: Order) {
+    const itemIndex = this.items.findIndex((item) => item.id === order.id)
+
+    this.items[itemIndex] = order
+  }
+
   async create(order: Order) {
     this.items.push(order)
   }

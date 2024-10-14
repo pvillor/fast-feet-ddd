@@ -17,13 +17,13 @@ describe('Get Courier By CPF', () => {
 
   it('should be able to get a courier by cpf', async () => {
     const newCourier = makeCourier({
-      cpf: '1234',
+      cpf: '12345678910',
     })
 
     await inMemoryCouriersRepository.create(newCourier)
 
     const { courier } = await sut.execute({
-      cpf: '1234',
+      cpf: '12345678910',
     })
 
     expect(courier.id).toBeTruthy()
