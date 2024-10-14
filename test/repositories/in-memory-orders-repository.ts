@@ -14,6 +14,14 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return order
   }
 
+  async findManyByCourierId(courierId: string) {
+    const orders = this.items.filter(
+      (item) => item.courierId.toString() === courierId,
+    )
+
+    return orders
+  }
+
   async save(order: Order) {
     const itemIndex = this.items.findIndex((item) => item.id === order.id)
 

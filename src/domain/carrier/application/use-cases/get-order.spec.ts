@@ -22,6 +22,6 @@ describe('Get Order', () => {
 
     expect(order.id).toBeTruthy()
     expect(order.courierId).toEqual(newOrder.courierId)
-    expect(order.ordererId).toEqual(newOrder.ordererId)
+    expect(order.recipientId).toEqual(newOrder.recipientId)
   })
 })
