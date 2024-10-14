@@ -26,6 +26,10 @@ export class Order extends Entity<OrderProps> {
     return this.props.status
   }
 
+  set status(status: OrderStatus) {
+    this.props.status = status
+  }
+
   get orderedAt() {
     return this.props.orderedAt
   }
