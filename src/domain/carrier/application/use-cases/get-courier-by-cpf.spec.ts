@@ -15,7 +15,7 @@ describe('Get Courier By CPF', () => {
     sut = new GetCourierByCpfUseCase(inMemoryCouriersRepository)
   })
 
-  it('should be able to create a courier', async () => {
+  it('should be able to get a courier by cpf', async () => {
     const newCourier = makeCourier({
       cpf: '1234',
     })

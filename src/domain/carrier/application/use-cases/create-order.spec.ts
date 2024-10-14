@@ -10,7 +10,7 @@ describe('Create Order', () => {
     sut = new CreateOrderUseCase(inMemoryOrdersRepository)
   })
 
-  it('should be able to create a order', async () => {
+  it('should be able to create an order', async () => {
     const { order } = await sut.execute({
       courierId: '1',
       recipientId: '1',

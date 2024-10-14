@@ -1,27 +1,26 @@
 import { InMemoryRecipientsRepository } from 'test/repositories/in-memory-recipients-repository'
-import { GetRecipientUseCase } from './get-recipient'
 import { makeRecipient } from 'test/factories/make-recipient'
+import { DeleteRecipientUseCase } from './delete-recipient'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
-let sut: GetRecipientUseCase
+let sut: DeleteRecipientUseCase
 
-describe('Get Recipient', () => {
+describe('Delete Recipient', () => {
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository()
-    sut = new GetRecipientUseCase(inMemoryRecipientsRepository)
+    sut = new DeleteRecipientUseCase(inMemoryRecipientsRepository)
   })
 
-  it('should be able to get a recipient details', async () => {
+  it('should be able to delete a recipient', async () => {
     const newRecipient = makeRecipient({}, new UniqueEntityId('recipient-1'))
 
     await inMemoryRecipientsRepository.create(newRecipient)
 
-    const { recipient } = await sut.execute({
+    await sut.execute({
       recipientId: 'recipient-1',
     })
 
-    expect(recipient.id).toBeTruthy()
-    expect(recipient.name).toEqual(newRecipient.name)
+    expect(inMemoryRecipientsRepository.items).toHaveLength(0)
   })
 })
