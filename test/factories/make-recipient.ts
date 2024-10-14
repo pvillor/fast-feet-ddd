@@ -3,7 +3,7 @@ import {
   Recipient,
   RecipientProps,
 } from '@/domain/carrier/enterprise/entities/recipient'
-import { faker } from '@faker-js/faker/.'
+import { faker } from '@faker-js/faker'
 
 export function makeRecipient(
   override: Partial<RecipientProps>,
