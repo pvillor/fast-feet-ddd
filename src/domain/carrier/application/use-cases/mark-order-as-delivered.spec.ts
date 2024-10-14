@@ -8,13 +8,13 @@ import { Status } from '../../enterprise/entities/value-objects/order-status'
 let inMemoryOrdersRepository: InMemoryOrdersRepository
 let sut: MarkOrderAsDeliveredUseCase
 
-describe('Edit Order', () => {
+describe('Mark Order As Delivered', () => {
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository()
     sut = new MarkOrderAsDeliveredUseCase(inMemoryOrdersRepository)
   })
 
-  it('should be able to mark a order as delivered', async () => {
+  it('should be able to mark an order as delivered', async () => {
     const newOrder = makeOrder({}, new UniqueEntityId('order-1'))
 
     await inMemoryOrdersRepository.create(newOrder)
