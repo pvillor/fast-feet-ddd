@@ -1,7 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-interface CourierProps {
+export interface CourierProps {
   name: string
   cpf: string
 }
@@ -16,7 +16,7 @@ export class Courier extends Entity<CourierProps> {
   }
 
   set cpf(cpf: string) {
-    if (cpf.length > 11) {
+    if (cpf.length !== 11) {
       throw new Error('Invalid cpf length.')
     }
   }

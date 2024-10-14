@@ -3,7 +3,7 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
-interface OrderProps {
+export interface OrderProps {
   ordererId: UniqueEntityId
   courierId: UniqueEntityId
   status: OrderStatus
