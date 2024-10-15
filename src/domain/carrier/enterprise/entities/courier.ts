@@ -33,11 +33,7 @@ export class Courier extends Entity<CourierProps> {
     return this.props.passwordHash
   }
 
-  set passwordHash(password: string) {
-    this.setPasswordHash(password)
-  }
-
-  private async setPasswordHash(password: string) {
+  async setPasswordHash(password: string) {
     this.props.passwordHash = await hash(password, 6)
   }
 
