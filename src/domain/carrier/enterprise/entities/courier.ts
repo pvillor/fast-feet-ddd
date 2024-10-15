@@ -1,9 +1,11 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { hash } from 'bcrypt'
 
 export interface CourierProps {
   name: string
   cpf: string
+  passwordHash: string
 }
 
 export class Courier extends Entity<CourierProps> {
@@ -27,14 +29,29 @@ export class Courier extends Entity<CourierProps> {
     this.props.cpf = cpf
   }
 
-  static create(props: CourierProps, id?: UniqueEntityId) {
+  get passwordHash() {
+    return this.props.passwordHash
+  }
+
+  set passwordHash(password: string) {
+    this.setPasswordHash(password)
+  }
+
+  private async setPasswordHash(password: string) {
+    this.props.passwordHash = await hash(password, 6)
+  }
+
+  static async create(props: CourierProps, id?: UniqueEntityId) {
     if (props.cpf.length !== 11) {
       throw new Error('Invalid cpf length.')
     }
 
+    const { passwordHash: password, ...propsWithoutPassword } = props
+
     const courier = new Courier(
       {
-        ...props,
+        passwordHash: await hash(password, 6),
+        ...propsWithoutPassword,
       },
       id,
     )

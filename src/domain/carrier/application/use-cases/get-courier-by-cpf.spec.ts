@@ -16,7 +16,7 @@ describe('Get Courier By CPF', () => {
   })
 
   it('should be able to get a courier by cpf', async () => {
-    const newCourier = makeCourier({
+    const newCourier = await makeCourier({
       cpf: '12345678910',
     })
 

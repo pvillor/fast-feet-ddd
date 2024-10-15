@@ -20,7 +20,7 @@ describe('Fetch Courier Orders', () => {
   })
 
   it('should be able to fetch a courier orders', async () => {
-    const newCourier = makeCourier({}, new UniqueEntityId('courier-1'))
+    const newCourier = await makeCourier({}, new UniqueEntityId('courier-1'))
     await inMemoryCouriersRepository.create(newCourier)
 
     const newOrder = makeOrder({

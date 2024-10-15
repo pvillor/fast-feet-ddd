@@ -13,7 +13,7 @@ describe('Edit Courier', () => {
   })
 
   it('should be able to edit a courier', async () => {
-    const newCourier = makeCourier({}, new UniqueEntityId('courier-1'))
+    const newCourier = await makeCourier({}, new UniqueEntityId('courier-1'))
 
     await inMemoryCouriersRepository.create(newCourier)
 

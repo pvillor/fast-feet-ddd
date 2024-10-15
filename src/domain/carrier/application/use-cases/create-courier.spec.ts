@@ -14,6 +14,7 @@ describe('Create Courier', () => {
     const { courier } = await sut.execute({
       name: 'John Doe',
       cpf: '00000000000',
+      password: '1234',
     })
 
     expect(courier.id).toBeTruthy()
@@ -23,6 +24,7 @@ describe('Create Courier', () => {
       sut.execute({
         name: 'John Doe',
         cpf: '1234',
+        password: '1234',
       }),
     ).rejects.toBeInstanceOf(Error)
   })
