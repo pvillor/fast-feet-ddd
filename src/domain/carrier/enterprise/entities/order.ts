@@ -5,11 +5,12 @@ import { Optional } from '@/core/types/optional'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
-  courierId: UniqueEntityId
+  courierId?: UniqueEntityId | null
+  photoId?: UniqueEntityId | null
   status: OrderStatus
   orderedAt: Date
-  dispatchedAt?: Date | null
-  retrievedAt?: Date | null
+  availableAt?: Date | null
+  collectedAt?: Date | null
   deliveredAt?: Date | null
 }
 
@@ -20,6 +21,18 @@ export class Order extends Entity<OrderProps> {
 
   get courierId() {
     return this.props.courierId
+  }
+
+  set courierId(courierId: UniqueEntityId | null | undefined) {
+    this.props.courierId = courierId
+  }
+
+  get photoId() {
+    return this.props.photoId
+  }
+
+  set photoId(photoId: UniqueEntityId | null | undefined) {
+    this.props.photoId = photoId
   }
 
   get status() {
@@ -34,20 +47,32 @@ export class Order extends Entity<OrderProps> {
     return this.props.orderedAt
   }
 
-  get dispatchedAt() {
-    return this.props.dispatchedAt
+  get availableAt() {
+    return this.props.availableAt
   }
 
-  get retrievedAt() {
-    return this.props.retrievedAt
+  set availableAt(availableAt: Date | null | undefined) {
+    this.props.availableAt = availableAt
+  }
+
+  get collectedAt() {
+    return this.props.collectedAt
+  }
+
+  set collectedAt(collectedAt: Date | null | undefined) {
+    this.props.collectedAt = collectedAt
   }
 
   get deliveredAt() {
     return this.props.deliveredAt
   }
 
+  set deliveredAt(deliveredAt: Date | null | undefined) {
+    this.props.deliveredAt = deliveredAt
+  }
+
   static create(
-    props: Optional<OrderProps, 'status' | 'orderedAt'>,
+    props: Optional<OrderProps, 'status' | 'orderedAt' | 'courierId'>,
     id?: UniqueEntityId,
   ) {
     const order = new Order(

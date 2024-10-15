@@ -33,6 +33,7 @@ export class MarkOrderAsAwaitingUseCase {
     }
 
     order.status = new OrderStatus(Status.Awaiting)
+    order.availableAt = new Date()
 
     await this.ordersRepository.save(order)
 

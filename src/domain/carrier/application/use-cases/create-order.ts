@@ -6,7 +6,6 @@ import { Order } from '../../enterprise/entities/order'
 import { Either, right } from '@/core/either'
 
 interface CreateOrderUseCaseRequest {
-  courierId: string
   recipientId: string
 }
 
@@ -23,12 +22,10 @@ export class CreateOrderUseCase {
   }
 
   async execute({
-    courierId,
     recipientId,
   }: CreateOrderUseCaseRequest): Promise<CreateOrderUseCaseResponse> {
     const order = Order.create({
       recipientId: new UniqueEntityId(recipientId),
-      courierId: new UniqueEntityId(courierId),
     })
 
     await this.ordersRepository.create(order)
