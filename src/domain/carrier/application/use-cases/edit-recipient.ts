@@ -1,4 +1,6 @@
+import { Either, left, right } from '@/core/either'
 import { RecipientsRepository } from '../repositories/recipient-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface EditRecipientUseCaseRequest {
   recipientId: string
@@ -6,9 +8,7 @@ interface EditRecipientUseCaseRequest {
   address: string
 }
 
-interface EditRecipientUseCaseResponse {
-  //
-}
+type EditRecipientUseCaseResponse = Either<ResourceNotFoundError, object>
 
 export class EditRecipientUseCase {
   constructor(private recipientsRepository: RecipientsRepository) {
@@ -23,7 +23,7 @@ export class EditRecipientUseCase {
     const recipient = await this.recipientsRepository.findById(recipientId)
 
     if (!recipient) {
-      throw new Error('Recipient not found')
+      return left(new ResourceNotFoundError())
     }
 
     recipient.name = name
@@ -31,6 +31,6 @@ export class EditRecipientUseCase {
 
     await this.recipientsRepository.save(recipient)
 
-    return {}
+    return right({})
   }
 }

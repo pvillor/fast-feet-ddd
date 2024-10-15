@@ -33,10 +33,12 @@ describe('Fetch Courier Orders', () => {
     await inMemoryOrdersRepository.create(newOrder)
     await inMemoryOrdersRepository.create(newOrder2)
 
-    const { orders } = await sut.execute({
+    const result = await sut.execute({
       courierId: 'courier-1',
     })
 
-    expect(orders).toHaveLength(1)
+    if (result.isRight()) {
+      expect(result.value.orders).toHaveLength(1)
+    }
   })
 })

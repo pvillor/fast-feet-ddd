@@ -1,15 +1,20 @@
+import { Either, left, right } from '@/core/either'
 import { Courier } from '../../enterprise/entities/courier'
 import { CouriersRepository } from '../repositories/courier-repository'
 import { compare } from 'bcrypt'
+import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
 interface AuthenticateCourierUseCaseRequest {
   cpf: string
   password: string
 }
 
-interface AuthenticateCourierUseCaseResponse {
-  courier: Courier
-}
+type AuthenticateCourierUseCaseResponse = Either<
+  InvalidCredentialsError,
+  {
+    courier: Courier
+  }
+>
 
 export class AuthenticateCourierUseCase {
   constructor(private couriersRepository: CouriersRepository) {
@@ -23,15 +28,15 @@ export class AuthenticateCourierUseCase {
     const courier = await this.couriersRepository.findByCpf(cpf)
 
     if (!courier) {
-      throw new Error('Invalid credentials')
+      return left(new InvalidCredentialsError())
     }
 
     const doesPasswordMatch = await compare(password, courier.passwordHash)
 
     if (!doesPasswordMatch) {
-      throw new Error('Invalid credentials')
+      return left(new InvalidCredentialsError())
     }
 
-    return { courier }
+    return right({ courier })
   }
 }

@@ -1,14 +1,19 @@
+import { Either, left, right } from '@/core/either'
 import { Courier } from '../../enterprise/entities/courier'
 import { CouriersRepository } from '../repositories/courier-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface ChangeCourierPasswordUseCaseRequest {
   courierId: string
   password: string
 }
 
-interface ChangeCourierPasswordUseCaseResponse {
-  courier: Courier
-}
+type ChangeCourierPasswordUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    courier: Courier
+  }
+>
 
 export class ChangeCourierPasswordUseCase {
   constructor(private couriersRepository: CouriersRepository) {
@@ -22,15 +27,15 @@ export class ChangeCourierPasswordUseCase {
     const courier = await this.couriersRepository.findById(courierId)
 
     if (!courier) {
-      throw new Error('Courier not found')
+      return left(new ResourceNotFoundError())
     }
 
     await courier.setPasswordHash(password)
 
     await this.couriersRepository.save(courier)
 
-    return {
+    return right({
       courier,
-    }
+    })
   }
 }

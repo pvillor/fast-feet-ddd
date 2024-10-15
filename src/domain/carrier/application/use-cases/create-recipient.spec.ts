@@ -11,12 +11,16 @@ describe('Create Recipient', () => {
   })
 
   it('should be able to create a recipient', async () => {
-    const { recipient } = await sut.execute({
+    const result = await sut.execute({
       name: 'John Doe',
       address: '000000000000',
     })
 
-    expect(recipient.id).toBeTruthy()
-    expect(inMemoryRecipientsRepository.items[0].id).toEqual(recipient.id)
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(inMemoryRecipientsRepository.items[0].id).toEqual(
+        result.value.recipient.id,
+      )
+    }
   })
 })

@@ -16,12 +16,15 @@ describe('Get Order', () => {
     const newOrder = makeOrder({}, new UniqueEntityId('order-1'))
     await inMemoryOrdersRepository.create(newOrder)
 
-    const { order } = await sut.execute({
+    const result = await sut.execute({
       orderId: 'order-1',
     })
 
-    expect(order.id).toBeTruthy()
-    expect(order.courierId).toEqual(newOrder.courierId)
-    expect(order.recipientId).toEqual(newOrder.recipientId)
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(newOrder.id).toEqual(result.value.order.id)
+      expect(result.value.order.courierId).toEqual(newOrder.courierId)
+      expect(result.value.order.recipientId).toEqual(newOrder.recipientId)
+    }
   })
 })

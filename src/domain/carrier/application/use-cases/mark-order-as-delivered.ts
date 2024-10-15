@@ -1,17 +1,22 @@
+import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
 import {
   OrderStatus,
   Status,
 } from '../../enterprise/entities/value-objects/order-status'
 import { OrdersRepository } from '../repositories/order-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface MarkOrderAsDeliveredUseCaseRequest {
   orderId: string
 }
 
-interface MarkOrderAsDeliveredUseCaseResponse {
-  order: Order
-}
+type MarkOrderAsDeliveredUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    order: Order
+  }
+>
 
 export class MarkOrderAsDeliveredUseCase {
   constructor(private ordersRepository: OrdersRepository) {
@@ -24,13 +29,13 @@ export class MarkOrderAsDeliveredUseCase {
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
-      throw new Error('Order not found')
+      return left(new ResourceNotFoundError())
     }
 
     order.status = new OrderStatus(Status.Delivered)
 
     await this.ordersRepository.save(order)
 
-    return { order }
+    return right({ order })
   }
 }

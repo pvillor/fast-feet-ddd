@@ -1,12 +1,12 @@
+import { Either, left, right } from '@/core/either'
 import { CouriersRepository } from '../repositories/courier-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface DeleteCourierUseCaseRequest {
   courierId: string
 }
 
-interface DeleteCourierUseCaseResponse {
-  //
-}
+type DeleteCourierUseCaseResponse = Either<ResourceNotFoundError, object>
 
 export class DeleteCourierUseCase {
   constructor(private couriersRepository: CouriersRepository) {
@@ -19,11 +19,11 @@ export class DeleteCourierUseCase {
     const courier = await this.couriersRepository.findById(courierId)
 
     if (!courier) {
-      throw new Error('Courier not found')
+      return left(new ResourceNotFoundError())
     }
 
     await this.couriersRepository.delete(courier)
 
-    return {}
+    return right({})
   }
 }

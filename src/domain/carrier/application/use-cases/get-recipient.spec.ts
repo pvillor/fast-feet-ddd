@@ -17,11 +17,14 @@ describe('Get Recipient', () => {
 
     await inMemoryRecipientsRepository.create(newRecipient)
 
-    const { recipient } = await sut.execute({
+    const result = await sut.execute({
       recipientId: 'recipient-1',
     })
 
-    expect(recipient.id).toBeTruthy()
-    expect(recipient.name).toEqual(newRecipient.name)
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(newRecipient.id).toEqual(result.value.recipient.id)
+      expect(result.value.recipient.name).toEqual(newRecipient.name)
+    }
   })
 })

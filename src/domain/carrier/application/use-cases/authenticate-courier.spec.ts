@@ -23,11 +23,16 @@ describe('Authenticate Courier', () => {
 
     inMemoryCouriersRepository.create(newCourier)
 
-    const { courier } = await sut.execute({
+    const result = await sut.execute({
       cpf: '00000000000',
       password: '1234',
     })
 
-    expect(courier.id.toString()).toEqual('courier-1')
+    expect(result.isRight()).toEqual(true)
+    if (result.isRight()) {
+      expect(inMemoryCouriersRepository.items[0].id).toEqual(
+        result.value.courier.id,
+      )
+    }
   })
 })

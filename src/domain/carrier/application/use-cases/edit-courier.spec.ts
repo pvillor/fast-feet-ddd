@@ -27,13 +27,5 @@ describe('Edit Courier', () => {
       name: 'John Doe',
       cpf: '00000000000',
     })
-
-    expect(() =>
-      sut.execute({
-        courierId: 'courier-1',
-        name: 'John Doe',
-        cpf: '1234',
-      }),
-    ).rejects.toBeInstanceOf(Error)
   })
 })

@@ -1,6 +1,8 @@
 import { CouriersRepository } from '../repositories/courier-repository'
 import { Courier } from '../../enterprise/entities/courier'
 import { hash } from 'bcrypt'
+import { Either, left, right } from '@/core/either'
+import { AlreadyExistsError } from './errors/already-exists-error'
 
 interface CreateCourierUseCaseRequest {
   name: string
@@ -8,9 +10,12 @@ interface CreateCourierUseCaseRequest {
   password: string
 }
 
-interface CreateCourierUseCaseResponse {
-  courier: Courier
-}
+type CreateCourierUseCaseResponse = Either<
+  AlreadyExistsError,
+  {
+    courier: Courier
+  }
+>
 
 export class CreateCourierUseCase {
   constructor(private couriersRepository: CouriersRepository) {
@@ -25,7 +30,7 @@ export class CreateCourierUseCase {
     const courierWithSameCpf = await this.couriersRepository.findByCpf(cpf)
 
     if (courierWithSameCpf) {
-      throw new Error('CPF already in use')
+      return left(new AlreadyExistsError())
     }
 
     const courier = await Courier.create({
@@ -36,6 +41,6 @@ export class CreateCourierUseCase {
 
     await this.couriersRepository.create(courier)
 
-    return { courier }
+    return right({ courier })
   }
 }

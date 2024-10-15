@@ -1,12 +1,12 @@
+import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/order-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface DeleteOrderUseCaseRequest {
   orderId: string
 }
 
-interface DeleteOrderUseCaseResponse {
-  //
-}
+type DeleteOrderUseCaseResponse = Either<ResourceNotFoundError, object>
 
 export class DeleteOrderUseCase {
   constructor(private ordersRepository: OrdersRepository) {
@@ -19,11 +19,11 @@ export class DeleteOrderUseCase {
     const order = await this.ordersRepository.findById(orderId)
 
     if (!order) {
-      throw new Error('Order not found')
+      return left(new ResourceNotFoundError())
     }
 
     await this.ordersRepository.delete(order)
 
-    return {}
+    return right({})
   }
 }

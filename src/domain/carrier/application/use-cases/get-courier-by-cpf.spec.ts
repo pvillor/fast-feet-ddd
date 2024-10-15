@@ -22,12 +22,15 @@ describe('Get Courier By CPF', () => {
 
     await inMemoryCouriersRepository.create(newCourier)
 
-    const { courier } = await sut.execute({
+    const result = await sut.execute({
       cpf: '12345678910',
     })
 
-    expect(courier.id).toBeTruthy()
-
-    expect(courier.name).toEqual(newCourier.name)
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(inMemoryCouriersRepository.items[0].id).toEqual(
+        result.value.courier.id,
+      )
+    }
   })
 })

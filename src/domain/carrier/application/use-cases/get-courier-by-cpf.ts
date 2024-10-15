@@ -1,13 +1,18 @@
 import { CouriersRepository } from '../repositories/courier-repository'
 import { Courier } from '../../enterprise/entities/courier'
+import { Either, left, right } from '@/core/either'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface GetCourierByCpfUseCaseRequest {
   cpf: string
 }
 
-interface GetCourierByCpfUseCaseResponse {
-  courier: Courier
-}
+type GetCourierByCpfUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    courier: Courier
+  }
+>
 
 export class GetCourierByCpfUseCase {
   constructor(private couriersRepository: CouriersRepository) {
@@ -20,9 +25,9 @@ export class GetCourierByCpfUseCase {
     const courier = await this.couriersRepository.findByCpf(cpf)
 
     if (!courier) {
-      throw new Error('Courier not found')
+      return left(new ResourceNotFoundError())
     }
 
-    return { courier }
+    return right({ courier })
   }
 }

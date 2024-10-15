@@ -19,10 +19,13 @@ describe('Mark Order As Awaiting', () => {
 
     await inMemoryOrdersRepository.create(newOrder)
 
-    const { order } = await sut.execute({
+    const result = await sut.execute({
       orderId: newOrder.id.toValue(),
     })
 
-    expect(order.status.value).toEqual(Status.Awaiting)
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(result.value.order.status.value).toEqual(Status.Awaiting)
+    }
   })
 })

@@ -11,12 +11,16 @@ describe('Create Order', () => {
   })
 
   it('should be able to create an order', async () => {
-    const { order } = await sut.execute({
+    const result = await sut.execute({
       courierId: '1',
       recipientId: '1',
     })
 
-    expect(order.id).toBeTruthy()
-    expect(inMemoryOrdersRepository.items[0].id).toEqual(order.id)
+    expect(result.isRight()).toBe(true)
+    if (result.isRight()) {
+      expect(inMemoryOrdersRepository.items[0].id).toEqual(
+        result.value.order.id,
+      )
+    }
   })
 })

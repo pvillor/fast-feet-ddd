@@ -1,14 +1,19 @@
 import { OrdersRepository } from '../repositories/order-repository'
 import { Order } from '../../enterprise/entities/order'
 import { CouriersRepository } from '../repositories/courier-repository'
+import { Either, left, right } from '@/core/either'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface FetchCourierOrdersUseCaseRequest {
   courierId: string
 }
 
-interface FetchCourierOrdersUseCaseResponse {
-  orders: Order[]
-}
+type FetchCourierOrdersUseCaseResponse = Either<
+  ResourceNotFoundError,
+  {
+    orders: Order[]
+  }
+>
 
 export class FetchCourierOrdersUseCase {
   constructor(
@@ -24,13 +29,13 @@ export class FetchCourierOrdersUseCase {
     const courier = await this.couriersRepository.findById(courierId)
 
     if (!courier) {
-      throw new Error('Courier not found')
+      return left(new ResourceNotFoundError())
     }
 
     const orders = await this.ordersRepository.findManyByCourierId(
       courier.id.toString(),
     )
 
-    return { orders }
+    return right({ orders })
   }
 }

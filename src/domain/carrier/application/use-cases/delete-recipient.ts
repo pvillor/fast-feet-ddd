@@ -1,12 +1,12 @@
+import { Either, left, right } from '@/core/either'
 import { RecipientsRepository } from '../repositories/recipient-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface DeleteRecipientUseCaseRequest {
   recipientId: string
 }
 
-interface DeleteRecipientUseCaseResponse {
-  //
-}
+type DeleteRecipientUseCaseResponse = Either<ResourceNotFoundError, object>
 
 export class DeleteRecipientUseCase {
   constructor(private recipientsRepository: RecipientsRepository) {
@@ -19,11 +19,11 @@ export class DeleteRecipientUseCase {
     const recipient = await this.recipientsRepository.findById(recipientId)
 
     if (!recipient) {
-      throw new Error('Recipient not found')
+      return left(new ResourceNotFoundError())
     }
 
     await this.recipientsRepository.delete(recipient)
 
-    return {}
+    return right({})
   }
 }

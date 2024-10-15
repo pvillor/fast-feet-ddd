@@ -1,4 +1,6 @@
+import { Either, left, right } from '@/core/either'
 import { CouriersRepository } from '../repositories/courier-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface EditCourierUseCaseRequest {
   courierId: string
@@ -6,9 +8,7 @@ interface EditCourierUseCaseRequest {
   cpf: string
 }
 
-interface EditCourierUseCaseResponse {
-  //
-}
+type EditCourierUseCaseResponse = Either<ResourceNotFoundError, object>
 
 export class EditCourierUseCase {
   constructor(private couriersRepository: CouriersRepository) {
@@ -23,13 +23,13 @@ export class EditCourierUseCase {
     const courier = await this.couriersRepository.findById(courierId)
 
     if (!courier) {
-      throw new Error('Courier not found')
+      return left(new ResourceNotFoundError())
     }
 
     const courierWithSameCpf = await this.couriersRepository.findByCpf(cpf)
 
     if (courierWithSameCpf) {
-      throw new Error('CPF already in use')
+      return left(new ResourceNotFoundError())
     }
 
     courier.name = name
@@ -37,6 +37,6 @@ export class EditCourierUseCase {
 
     await this.couriersRepository.save(courier)
 
-    return {}
+    return right({})
   }
 }

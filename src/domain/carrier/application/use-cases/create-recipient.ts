@@ -1,14 +1,18 @@
 import { RecipientsRepository } from '../repositories/recipient-repository'
 import { Recipient } from '../../enterprise/entities/recipient'
+import { Either, right } from '@/core/either'
 
 interface CreateRecipientUseCaseRequest {
   name: string
   address: string
 }
 
-interface CreateRecipientUseCaseResponse {
-  recipient: Recipient
-}
+type CreateRecipientUseCaseResponse = Either<
+  null,
+  {
+    recipient: Recipient
+  }
+>
 
 export class CreateRecipientUseCase {
   constructor(private recipientsRepository: RecipientsRepository) {
@@ -26,6 +30,6 @@ export class CreateRecipientUseCase {
 
     await this.recipientsRepository.create(recipient)
 
-    return { recipient }
+    return right({ recipient })
   }
 }

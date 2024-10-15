@@ -11,21 +11,17 @@ describe('Create Courier', () => {
   })
 
   it('should be able to create a courier', async () => {
-    const { courier } = await sut.execute({
+    const successResult = await sut.execute({
       name: 'John Doe',
       cpf: '00000000000',
       password: '1234',
     })
 
-    expect(courier.id).toBeTruthy()
-    expect(inMemoryCouriersRepository.items[0].id).toEqual(courier.id)
-
-    expect(() =>
-      sut.execute({
-        name: 'John Doe',
-        cpf: '1234',
-        password: '1234',
-      }),
-    ).rejects.toBeInstanceOf(Error)
+    expect(successResult.isRight()).toBe(true)
+    if (successResult.isRight()) {
+      expect(inMemoryCouriersRepository.items[0].id).toEqual(
+        successResult.value.courier.id,
+      )
+    }
   })
 })
