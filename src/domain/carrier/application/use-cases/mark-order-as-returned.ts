@@ -5,7 +5,7 @@ import {
   Status,
 } from '../../enterprise/entities/value-objects/order-status'
 import { OrdersRepository } from '../repositories/order-repository'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface MarkOrderAsReturnedUseCaseRequest {
   orderId: string

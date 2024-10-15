@@ -1,7 +1,7 @@
 import { RecipientsRepository } from '../repositories/recipient-repository'
 import { Recipient } from '../../enterprise/entities/recipient'
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface GetRecipientUseCaseRequest {
   recipientId: string

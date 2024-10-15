@@ -5,9 +5,9 @@ import {
   Status,
 } from '../../enterprise/entities/value-objects/order-status'
 import { OrdersRepository } from '../repositories/order-repository'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { CouriersRepository } from '../repositories/courier-repository'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { OrderPhoto } from '../../enterprise/entities/order-photo'
 
 interface MarkOrderAsDeliveredUseCaseRequest {

@@ -1,7 +1,7 @@
 import { Either, left, right } from '@/core/either'
 import { Courier } from '../../enterprise/entities/courier'
 import { CouriersRepository } from '../repositories/courier-repository'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface ChangeCourierPasswordUseCaseRequest {
   courierId: string

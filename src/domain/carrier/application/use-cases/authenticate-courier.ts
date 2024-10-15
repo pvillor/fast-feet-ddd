@@ -2,7 +2,7 @@ import { Either, left, right } from '@/core/either'
 import { Courier } from '../../enterprise/entities/courier'
 import { CouriersRepository } from '../repositories/courier-repository'
 import { compare } from 'bcrypt'
-import { InvalidCredentialsError } from './errors/invalid-credentials-error'
+import { InvalidCredentialsError } from '@/core/errors/errors/invalid-credentials-error'
 
 interface AuthenticateCourierUseCaseRequest {
   cpf: string

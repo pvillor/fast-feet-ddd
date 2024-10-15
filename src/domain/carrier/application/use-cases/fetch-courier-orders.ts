@@ -2,7 +2,7 @@ import { OrdersRepository } from '../repositories/order-repository'
 import { Order } from '../../enterprise/entities/order'
 import { CouriersRepository } from '../repositories/courier-repository'
 import { Either, left, right } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
 interface FetchCourierOrdersUseCaseRequest {
   courierId: string

@@ -2,7 +2,7 @@ import { CouriersRepository } from '../repositories/courier-repository'
 import { Courier } from '../../enterprise/entities/courier'
 import { hash } from 'bcrypt'
 import { Either, left, right } from '@/core/either'
-import { AlreadyExistsError } from './errors/already-exists-error'
+import { AlreadyExistsError } from '@/core/errors/errors/already-exists-error'
 
 interface CreateCourierUseCaseRequest {
   name: string
