@@ -6,6 +6,7 @@ import { OrderCreatedEvent } from '../events/order-created'
 import { OrderAvailableEvent } from '../events/order-available'
 import { OrderCollectedEvent } from '../events/order-collected'
 import { OrderDeliveredEvent } from '../events/order-delivered'
+import { OrderReturnedEvent } from '../events/order-returned'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
@@ -75,6 +76,8 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   return() {
+    this.addDomainEvent(new OrderReturnedEvent(this))
+
     this.props.status = new OrderStatus(Status.Returned)
   }
 
