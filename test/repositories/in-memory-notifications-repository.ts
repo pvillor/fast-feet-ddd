@@ -2,6 +2,7 @@ import { NotificationsRepository } from '@/domain/notification/application/repos
 import { Notification } from '@/domain/notification/enterprise/entities/notification'
 
 export class InMemoryNotificationsRepository
+  // eslint-disable-next-line prettier/prettier
   implements NotificationsRepository {
   public items: Notification[] = []
 

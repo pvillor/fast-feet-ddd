@@ -5,6 +5,7 @@ import { Optional } from '@/core/types/optional'
 import { OrderCreatedEvent } from '../events/order-created'
 import { OrderAvailableEvent } from '../events/order-available'
 import { OrderCollectedEvent } from '../events/order-collected'
+import { OrderDeliveredEvent } from '../events/order-delivered'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
@@ -66,6 +67,8 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   deliver(photoId: UniqueEntityId) {
+    this.addDomainEvent(new OrderDeliveredEvent(this, photoId))
+
     this.props.photoId = photoId
     this.props.deliveredAt = new Date()
     this.props.status = new OrderStatus(Status.Delivered)
