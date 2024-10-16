@@ -1,25 +1,25 @@
 import { DomainEvents } from '@/core/events/domain-events'
 import { EventHandler } from '@/core/events/event-handler'
-import { OrderCreatedEvent } from '@/domain/carrier/enterprise/events/order-created'
+import { OrderAvailableEvent } from '@/domain/carrier/enterprise/events/order-available'
 import { SendNotificationUseCase } from '../use-cases/send-notification'
 
-export class OnOrderCreated implements EventHandler {
+export class OnOrderAvailable implements EventHandler {
   constructor(private sendNotification: SendNotificationUseCase) {
     this.setupSubscriptions()
   }
 
   setupSubscriptions(): void {
     DomainEvents.register(
-      this.sendNewOrderNotification.bind(this),
-      OrderCreatedEvent.name,
+      this.sendOrderAvailableNotification.bind(this),
+      OrderAvailableEvent.name,
     )
   }
 
-  private async sendNewOrderNotification({ order }: OrderCreatedEvent) {
+  private async sendOrderAvailableNotification({ order }: OrderAvailableEvent) {
     await this.sendNotification.execute({
       recipientId: order.recipientId.toString(),
-      title: 'New order confirmed!',
-      content: `Order confirmed at ${order.orderedAt.getHours()}:${order.orderedAt.getMinutes()}`,
+      title: 'Order available for pickup!',
+      content: 'A courier will pickup your order soon.',
     })
   }
 }

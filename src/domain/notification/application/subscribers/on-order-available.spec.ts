@@ -1,5 +1,5 @@
 import { makeOrder } from 'test/factories/make-order'
-import { OnOrderCreated } from './on-order-created'
+import { OnOrderAvailable } from './on-order-available'
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
 import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-notifications-repository'
 import {
@@ -20,7 +20,7 @@ let sendNotificationExecuteSpy: MockInstance<
   ) => Promise<SendNotificationUseCaseResponse>
 >
 
-describe('On Order Created', () => {
+describe('On Order Available', () => {
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository()
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
@@ -31,13 +31,17 @@ describe('On Order Created', () => {
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
 
     // eslint-disable-next-line no-new
-    new OnOrderCreated(sendNotificationUseCase)
+    new OnOrderAvailable(sendNotificationUseCase)
   })
 
-  it('should send a notification when an order is created', async () => {
+  it('should send a notification when an order is available', async () => {
     const order = makeOrder({})
 
     inMemoryOrdersRepository.create(order)
+
+    order.release()
+
+    inMemoryOrdersRepository.save(order)
 
     await waitFor(() => {
       expect(sendNotificationExecuteSpy).toHaveBeenCalled()

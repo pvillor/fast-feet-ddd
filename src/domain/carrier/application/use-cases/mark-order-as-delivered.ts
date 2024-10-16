@@ -1,9 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
-import {
-  OrderStatus,
-  Status,
-} from '../../enterprise/entities/value-objects/order-status'
 import { OrdersRepository } from '../repositories/order-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { CouriersRepository } from '../repositories/courier-repository'
@@ -61,8 +57,7 @@ export class MarkOrderAsDeliveredUseCase {
     })
 
     order.photoId = photo.id
-    order.status = new OrderStatus(Status.Delivered)
-    order.deliveredAt = new Date()
+    order.deliver()
 
     await this.ordersRepository.save(order)
 

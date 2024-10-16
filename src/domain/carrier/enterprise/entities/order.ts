@@ -3,6 +3,7 @@ import { OrderStatus, Status } from './value-objects/order-status'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { OrderCreatedEvent } from '../events/order-created'
+import { OrderAvailableEvent } from '../events/order-available'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
@@ -10,7 +11,7 @@ export interface OrderProps {
   photoId?: UniqueEntityId | null
   status: OrderStatus
   orderedAt: Date
-  availableAt?: Date | null
+  availableAt?: Date
   collectedAt?: Date | null
   deliveredAt?: Date | null
 }
@@ -22,10 +23,6 @@ export class Order extends AggregateRoot<OrderProps> {
 
   get courierId() {
     return this.props.courierId
-  }
-
-  set courierId(courierId: UniqueEntityId | null | undefined) {
-    this.props.courierId = courierId
   }
 
   get photoId() {
@@ -40,10 +37,6 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.status
   }
 
-  set status(status: OrderStatus) {
-    this.props.status = status
-  }
-
   get orderedAt() {
     return this.props.orderedAt
   }
@@ -52,24 +45,34 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.availableAt
   }
 
-  set availableAt(availableAt: Date | null | undefined) {
-    this.props.availableAt = availableAt
+  release() {
+    this.addDomainEvent(new OrderAvailableEvent(this))
+
+    this.props.availableAt = new Date()
+    this.props.status = new OrderStatus(Status.Awaiting)
   }
 
   get collectedAt() {
     return this.props.collectedAt
   }
 
-  set collectedAt(collectedAt: Date | null | undefined) {
-    this.props.collectedAt = collectedAt
+  collect(courierId: string) {
+    this.props.courierId = new UniqueEntityId(courierId)
+    this.props.collectedAt = new Date()
+    this.props.status = new OrderStatus(Status.Collected)
   }
 
   get deliveredAt() {
     return this.props.deliveredAt
   }
 
-  set deliveredAt(deliveredAt: Date | null | undefined) {
-    this.props.deliveredAt = deliveredAt
+  deliver() {
+    this.props.deliveredAt = new Date()
+    this.props.status = new OrderStatus(Status.Delivered)
+  }
+
+  return() {
+    this.props.status = new OrderStatus(Status.Returned)
   }
 
   static create(

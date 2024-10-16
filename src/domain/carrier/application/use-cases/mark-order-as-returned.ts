@@ -1,9 +1,5 @@
 import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
-import {
-  OrderStatus,
-  Status,
-} from '../../enterprise/entities/value-objects/order-status'
 import { OrdersRepository } from '../repositories/order-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 
@@ -32,7 +28,7 @@ export class MarkOrderAsReturnedUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    order.status = new OrderStatus(Status.Returned)
+    order.return()
 
     await this.ordersRepository.save(order)
 

@@ -1,13 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { Order } from '../../enterprise/entities/order'
-import {
-  OrderStatus,
-  Status,
-} from '../../enterprise/entities/value-objects/order-status'
 import { OrdersRepository } from '../repositories/order-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { CouriersRepository } from '../repositories/courier-repository'
-import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 interface MarkOrderAsCollectedUseCaseRequest {
   orderId: string
@@ -45,9 +40,7 @@ export class MarkOrderAsCollectedUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    order.courierId = new UniqueEntityId(courierId)
-    order.status = new OrderStatus(Status.Collected)
-    order.collectedAt = new Date()
+    order.collect(courierId)
 
     await this.ordersRepository.save(order)
 
