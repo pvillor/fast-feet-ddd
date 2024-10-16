@@ -1,3 +1,4 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { OrdersRepository } from '@/domain/carrier/application/repositories/order-repository'
 import { Order } from '@/domain/carrier/enterprise/entities/order'
 
@@ -15,8 +16,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   }
 
   async findManyByCourierId(courierId: string) {
+    if (!courierId) {
+      return []
+    }
+
     const orders = this.items.filter(
-      (item) => item.courierId.toString() === courierId,
+      (item) => item.courierId?.toString() === courierId,
     )
 
     return orders
@@ -26,10 +31,14 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     const itemIndex = this.items.findIndex((item) => item.id === order.id)
 
     this.items[itemIndex] = order
+
+    DomainEvents.dispatchEventsForAggregate(order.id)
   }
 
   async create(order: Order) {
     this.items.push(order)
+
+    DomainEvents.dispatchEventsForAggregate(order.id)
   }
 
   async delete(order: Order) {

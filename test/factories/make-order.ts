@@ -4,7 +4,6 @@ import { Order, OrderProps } from '@/domain/carrier/enterprise/entities/order'
 export function makeOrder(override: Partial<OrderProps>, id?: UniqueEntityId) {
   const order = Order.create(
     {
-      courierId: new UniqueEntityId(),
       recipientId: new UniqueEntityId(),
       ...override,
     },

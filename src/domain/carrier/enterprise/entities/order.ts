@@ -1,7 +1,8 @@
+import { AggregateRoot } from '@/core/entities/aggregate-root'
 import { OrderStatus, Status } from './value-objects/order-status'
-import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { OrderCreatedEvent } from '../events/order-created'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
@@ -14,7 +15,7 @@ export interface OrderProps {
   deliveredAt?: Date | null
 }
 
-export class Order extends Entity<OrderProps> {
+export class Order extends AggregateRoot<OrderProps> {
   get recipientId() {
     return this.props.recipientId
   }
@@ -78,11 +79,18 @@ export class Order extends Entity<OrderProps> {
     const order = new Order(
       {
         ...props,
+        courierId: props.courierId ?? null,
         status: new OrderStatus(Status.Processing),
         orderedAt: new Date(),
       },
       id,
     )
+
+    const isNewOrder = !id
+
+    if (isNewOrder) {
+      order.addDomainEvent(new OrderCreatedEvent(order))
+    }
 
     return order
   }
