@@ -56,8 +56,7 @@ export class MarkOrderAsDeliveredUseCase {
       orderId: order.id,
     })
 
-    order.photoId = photo.id
-    order.deliver()
+    order.deliver(photo.id)
 
     await this.ordersRepository.save(order)
 

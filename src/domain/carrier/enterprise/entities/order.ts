@@ -4,16 +4,17 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import { OrderCreatedEvent } from '../events/order-created'
 import { OrderAvailableEvent } from '../events/order-available'
+import { OrderCollectedEvent } from '../events/order-collected'
 
 export interface OrderProps {
   recipientId: UniqueEntityId
-  courierId?: UniqueEntityId | null
-  photoId?: UniqueEntityId | null
+  courierId?: UniqueEntityId
+  photoId?: UniqueEntityId
   status: OrderStatus
   orderedAt: Date
   availableAt?: Date
-  collectedAt?: Date | null
-  deliveredAt?: Date | null
+  collectedAt?: Date
+  deliveredAt?: Date
 }
 
 export class Order extends AggregateRoot<OrderProps> {
@@ -27,10 +28,6 @@ export class Order extends AggregateRoot<OrderProps> {
 
   get photoId() {
     return this.props.photoId
-  }
-
-  set photoId(photoId: UniqueEntityId | null | undefined) {
-    this.props.photoId = photoId
   }
 
   get status() {
@@ -56,8 +53,10 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.collectedAt
   }
 
-  collect(courierId: string) {
-    this.props.courierId = new UniqueEntityId(courierId)
+  collect(courierId: UniqueEntityId) {
+    this.addDomainEvent(new OrderCollectedEvent(this, courierId))
+
+    this.props.courierId = courierId
     this.props.collectedAt = new Date()
     this.props.status = new OrderStatus(Status.Collected)
   }
@@ -66,7 +65,8 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.deliveredAt
   }
 
-  deliver() {
+  deliver(photoId: UniqueEntityId) {
+    this.props.photoId = photoId
     this.props.deliveredAt = new Date()
     this.props.status = new OrderStatus(Status.Delivered)
   }
@@ -82,7 +82,6 @@ export class Order extends AggregateRoot<OrderProps> {
     const order = new Order(
       {
         ...props,
-        courierId: props.courierId ?? null,
         status: new OrderStatus(Status.Processing),
         orderedAt: new Date(),
       },
